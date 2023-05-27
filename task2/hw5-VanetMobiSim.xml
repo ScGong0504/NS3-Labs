@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!-- Cars in a City Center using the SpaceGraph. -->
+<universe>
+  <dimx>1000.0</dimx>
+  <dimy>1000.0</dimy>
+  <!--  <seed>11</seed> -->
+
+<!-- 输出轨迹文件，直接作为ns3中的节点使用 -->
+  <extension class="de.uni_stuttgart.informatik.canu.mobisim.extensions.NSOutput" output="ns_trace.txt"/>
+  <!--<extension class="de.uni_stuttgart.informatik.canu.mobisim.extensions.LoaderOutput" output="loader_trace.txt"/>-->
+  <!--<extension class="de.uni_stuttgart.informatik.canu.mobisim.extensions.DebugOutput" output="debug_trace.txt"/>-->
+
+  <extension class="de.uni_stuttgart.informatik.canu.mobisim.simulations.TimeSimulation" param="2000.0"/>
+
+<!-- 设置空间环境 -->
+  <extension name="SpatialModel" class="de.uni_stuttgart.informatik.canu.spatialmodel.core.SpatialModel" min_x="0" max_x="1000" min_y="0" max_y="1000">
+  </extension>
+	<!-- <extension name="TrafficLight" class="eurecom.spatialmodel.extensions.TrafficLight" step="10000"/>-->
+
+<!-- 创建随机图 -->
+ <extension class="eurecom.spacegraph.SpaceGraph" cluster="true">
+    <clusters density="0.000001">
+      <cluster id="suburban">
+        <density>0.000005</density>
+        <ratio>1.0</ratio>
+      </cluster>
+    </clusters>
+ </extension> 
+
+  <extension name="PosGen" class="de.uni_stuttgart.informatik.canu.tripmodel.generators.RandomInitialPositionGenerator"/>
+  <extension name="TripGen" class="de.uni_stuttgart.informatik.canu.tripmodel.generators.RandomTripGenerator" >
+    <reflect_directions>false</reflect_directions>
+	 <minstay>20.0</minstay> <maxstay>100.0</maxstay>
+  </extension>
+
+<!-- 节点组添加到仿真 -->
+  <nodegroup n="50">
+    <extension class="polito.uomm.IDM_IM" initposgenerator="PosGen" tripgenerator="TripGen">
+      <minspeed>8.3</minspeed>
+      <maxspeed>22.3</maxspeed>
+      <step>0.1</step>
+			<b>0.5</b>
+    </extension>
+  </nodegroup>
+
+  <extension class="de.uni_stuttgart.informatik.canu.mobisimadd.extensions.GUI">
+    <width>640</width>
+    <height>480</height>
+    <step>1</step>
+  </extension>
+<!--
+  <extension class="de.uni_stuttgart.informatik.canu.spatialmodel.extensions.DumpSpatialModel" output="dumped_graph.fig"/>
+-->
+</universe>
